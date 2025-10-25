@@ -1,0 +1,141 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#feedbackForm {
+    background-color: white;
+    padding: 30px 25px;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+#feedbackForm h2 {
+    text-align: center;
+    color: #0c63e4;
+    margin-bottom: 20px;
+}
+
+#feedbackForm textarea {
+    resize: none;
+    height: 150px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    margin-bottom: 15px;
+    outline: none;
+    transition: border 0.3s;
+}
+
+#feedbackForm textarea:focus {
+    border-color: #0c63e4;
+}
+
+#feedbackForm button {
+    padding: 12px;
+    background-color: #0c63e4;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#feedbackForm button:hover {
+    background-color: #084298;
+}
+
+#productRadio:hover{
+    cursor: pointer;
+}
+
+input[type="radio"] {
+    accent-color: #007bff; /* modern browsers support this */
+    transform: scale(1); /* keep size fixed */
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+input[type="radio"]:hover {
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.3);
+}
+
+
+#productCategory{
+    padding: 5px;
+    border-radius: 5px;
+}
+
+#serviceCategory{
+    padding: 5px;
+    border-radius: 5px;
+}
+
+#productCategory:hover{
+    border:2px solid black;
+}
+
+#serviceCategory:hover{
+    border: 2px solid black;
+}
+
+
+/* body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f2f5ff;
+        margin: 0;
+      } */
+
+.feedback-container {
+        border: 3px solid #333;
+        border-radius: 20px;
+        background-color: white;
+        width: 900px;
+        padding: 40px;
+        text-align: center;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+.feedback-container h1 {
+        font-size: 60px;
+        color: #2d7d46;
+      }
+
+.feedback-details {
+        text-align: left;
+        margin: 50px 0;
+        padding-left: 150px;
+      }
+
+.feedback-details p {
+        font-size: 35px;
+        margin: 15px 0;
+      }
+
+button {
+        background-color: rgb(54, 108, 225);
+        color: white;
+        padding: 15px 30px;
+        font-size: 20px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+button:hover {
+        background-color: rgb(34, 88, 205);
+      }
+

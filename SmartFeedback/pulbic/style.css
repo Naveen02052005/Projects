@@ -1,0 +1,116 @@
+/* General Page Style */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #74b9ff, #a29bfe);
+    margin: 0;
+    padding: 0;
+}
+
+/* Page Heading */
+h1 {
+    text-align: center;
+    color: #fff;
+    margin-top: 50px;
+    font-size: 32px;
+    letter-spacing: 1px;
+}
+
+/* Form Container */
+form {
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 30px 25px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0px 8px 25px rgba(0,0,0,0.15);
+    backdrop-filter: blur(10px);
+}
+
+/* Form Labels */
+label {
+    font-weight: 600;
+    color: #333;
+}
+
+/* Input Fields */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select,
+textarea {
+    width: 100%;
+    padding: 10px 12px;
+    margin: 6px 0 15px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 16px;
+    transition: 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+select:focus,
+textarea:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 6px rgba(0, 123, 255, 0.3);
+}
+
+/* Buttons */
+input[type="submit"],
+input[type="reset"] {
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 0;
+    width: 48%;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+}
+
+/* Button Hover */
+input[type="submit"]:hover,
+input[type="reset"]:hover {
+    background: #0056b3;
+    transform: scale(1.03);
+}
+
+/* Align Submit & Reset Side by Side */
+p:last-of-type {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Error Message Styling */
+.error-message {
+    color: #e74c3c;
+    font-size: 14px;
+    font-weight: 500;
+    display: block;
+    margin-top: -10px;
+    margin-bottom: 10px;
+}
+
+/* Responsive for Mobile */
+@media (max-width: 600px) {
+    form {
+        width: 90%;
+        padding: 25px 15px;
+    }
+
+    input[type="submit"],
+    input[type="reset"] {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    p:last-of-type {
+        flex-direction: column;
+    }
+}
