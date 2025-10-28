@@ -1,0 +1,142 @@
+body{
+    font-family: arial,sans-serif;
+}
+
+
+.sidebar{
+    border: 2px solid rgb(219, 217, 217);
+    height:100vh;
+    width: 300px;
+    background-color: rgb(251, 251, 251);
+    padding-top: 30px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    box-shadow: 2px 0 10px rgba(241, 241, 241, 0.2);
+    border-radius: 0 10px 10px 0;
+    overflow-x: hidden;
+    transition:width 0.3s ease;
+    z-index: 1000;
+}
+
+.sidebar h2{
+    margin: 10px 0 0 20px;
+}
+
+.sidebar ul{
+    list-style: none;
+    padding: 0;
+    margin-top: 40px;
+    margin-left: -10px;
+}
+
+.sidebar ul li a{
+    display: block ;
+    padding: 15px 25px;
+    color: #949393;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 20px;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+    margin: 5px 10px;
+}
+
+.sidebar ul li a:hover{
+    background-color: #b0aeae;
+    color:#182848;
+    transform: scale(1.05);
+}
+
+.main-content{
+    margin-left: 300px;
+    border: 1pcx solid rgba(255, 255, 255, 0);
+    border-radius: 10px;
+}
+
+h1{
+    margin-left: 20px;
+}
+
+.Feedback-Summary{
+    width: 1035px;
+    height: auto;
+    border: 1px solid rgba(0, 0, 0, 0.162);
+    margin-left: 60px;
+    border-radius: 10px;
+    
+}
+
+.Feedback-Summary h2{
+    margin-left: 20px;
+}
+.reviewTypes
+{
+   
+    display: flex;
+    margin-left: 60px;
+}
+.total{
+    height: 150px;
+    width: 200px;
+    
+    margin:0 0 20px 20px;
+    background-color: rgb(74, 74, 202);
+    color: white;
+    border-radius: 10px;
+}
+.positive{
+    height: 150px;
+    width: 200px;
+    /* border: 2px solid black; */
+    margin:0 0 20px 20px;
+    background-color: rgb(12, 243, 4);
+    color: white;
+    border-radius: 10px;
+}
+
+.neutral{
+    height: 150px;
+    width: 200px;
+    /* border: 2px solid black; */
+    margin:0 0 20px 20px;
+    background-color: orange;
+    color: white;
+    border-radius: 10px;
+}
+
+.negative{
+    height: 150px;
+    width: 200px;
+    /* border: 2px solid black; */
+    margin:0 0 20px 20px;
+    background-color: red;
+    color: white;
+    border-radius: 10px;
+}
+
+.overall-sentiment{
+    border: 1px solid rgba(0, 0, 0, 0.162);
+    border-radius: 10px;
+    height: 480px;
+    width: 450px;
+    margin-top: 10px;
+    margin-left: 55px;
+}
+
+.overall-sentiment h2{
+    margin-left: 10px;
+
+}
+
+.category-sentiment{
+    border: 1px solid rgba(0, 0, 0, 0.162);
+    border-radius: 10px;
+    width: 500px;
+    height: 480px;
+    margin-left: 600px;
+    margin-top: -480px;
+}
+.category-sentiment h2{
+    margin-left: 10px;
+}
