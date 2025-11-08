@@ -1,0 +1,61 @@
+body{
+    font-family: arial,sans-serif;
+}
+
+.edit {
+    width: 400px;
+    padding: 30px 25px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0px 8px 20px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+    margin: 100px auto;
+    background-color: white;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+}
+
+.edit h2 {
+    text-align: center;
+    color: #007bff;
+    font-size: 28px;
+    margin-bottom: 25px;
+}
+
+.edit label {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #333;
+}
+
+.edit input {
+    padding: 10px;
+    width: 100%;
+    margin-top: 6px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 15px;
+}
+
+button{
+    display: inline-block;
+    width: 100%;
+    padding: 10px 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    background-color: #0056b3;
+}
+
+.edit-btn:hover{
+    background-color: blue;
+    transform: scale(1.03);
+}
+
+
+
