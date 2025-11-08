@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Registration Form</title>
+        <link rel="stylesheet" href="/css/style.css">
+    </head>
+    <body>
+        <h1>Registration form</h1>
+        <form id="register" onsubmit="return validateForm()" onreset="resetErrors() " method="post" action="/register">
+        <p>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="userName">
+            <span id="name-error" class="error-message"></span>
+            <% if(nameError){ %>
+               <div class="error"> <%= nameError %></div>
+            <% } %>
+        </p>
+        <p>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email">
+            <span id="email-error" class="error-message"></span>
+            <% if(emailError){ %>
+               <div class="error"> <%= emailError %></div>
+            <% } %>
+        </p>
+        <p>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password">
+            <span id="password-error" class="error-message"></span>
+        </p>
+        <p>
+            <input type="submit" value="Register" name="Submit">
+            <input type="reset" value="Reset" name="Reset">
+        </p>
+        </form>
+        <script>
+                setTimeout(() => {
+                    const errorEl = document.querySelector('.error');
+                    if(errorEl) errorEl.style.display = 'none';
+                }, 5000);
+        </script>
+        <script src="/js/script.js"></script>
+
+    </body>
+</html>

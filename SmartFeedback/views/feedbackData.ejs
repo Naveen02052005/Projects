@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Users</title>
+        <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate" />
+        <meta http-equiv="Pragma" content="no-cache" />
+        <meta http-equiv="Expires" content="0" />
+        <style>
+            table { border-collapse:collapse; width: 80%; margin: 20px auto; }
+            th,td { border:1px solid #ccc; padding:8px; text-align: center; }
+            th { background-color: #007bff; color: white ;}
+            caption { font-size: 1.5em; margin-bottom: 10px;}
+        </style>
+    </head>
+    <body>
+
+        <table>
+            <caption>Feedback detiails</caption>
+            <tr>
+                <th>Feedback Id</th>
+                <th>User Id</th>
+                <th>User Name</th>
+                <th>Type of Category</th>
+                <th>Category Name</th>
+                <th>Message</th>
+                <th>Sentiment</th>
+                <th>Time Stamp</th>
+                <th>Action</th>
+            </tr>
+            <% for(result of results) { %>
+                <tr id="row-<%= result.feedbackId %>">
+                    <td><%= result.feedbackId %></td>
+                    <td><%= result.userId %></td>
+                    <td><%= result.userName %></td>
+                    <td><%= result.typeofCategory %></td>
+                    <td><%= result.categoryName %></td>
+                    <td><%= result.feedbackText %></td>
+                    <td><%= result.sentiment %></td>
+                    <td><%= result.timestamp.toString().split(" ").slice(0,5).join(" ") %></td>
+                    <td>
+                        <button onclick="deleteFeedback('<%= result.feedbackId %>')" style="background-color: green; color: white; border-radius: 5px; cursor: pointer;">Delete</button>
+                    </td>
+                </tr>
+
+                <% } %>
+        </table>
+
+    <script>
+function deleteFeedback(id) {
+    if (!confirm("Are you sure you want to delete this feedback?")) return;
+
+    fetch(`/admin/feedbacks/${id}`, { method: 'DELETE' })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                const row = document.getElementById(`row-${id}`);
+                if (row) row.remove();
+            } else {
+                alert("Failed to delete feedback: " + data.message);
+            }
+        })
+        .catch(err => alert("Error deleting feedback: " + err));
+}
+</script>
+
+</body>
+</html>
