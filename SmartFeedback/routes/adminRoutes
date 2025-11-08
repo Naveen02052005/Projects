@@ -1,1 +1,200 @@
+const connection = require("../db/connection");
+
+exports.getAdminLogin = (req, res) => {
+  res.render("adminLogin", { error: null });
+};
+
+exports.postAdminLogin = (req, res) => {
+  const { adminName, password } = req.body;
+  if (!adminName || !password)
+    return res.render("adminLogin", { error: "Please fill all fields" });
+
+  const q = "SELECT * FROM admin WHERE (adminName = ? OR email = ?) AND password = ?";
+  connection.query(q, [adminName, adminName, password], (err, results) => {
+    if (err) throw err;
+    if (results.length === 0)
+      return res.render("adminLogin", { error: "Invalid credentials" });
+
+    req.session.adminId = results[0].id;
+    res.redirect("/admin");
+  });
+};
+
+exports.getAdminDashboard = (req, res) => {
+  const q = "SELECT sentiment, COUNT(*) AS count FROM Feedback GROUP BY sentiment";
+  const q2 = `
+    SELECT s.categoryName, f.sentiment, COUNT(*) AS count
+    FROM Feedback f 
+    JOIN ServiceType s ON f.feedbackId = s.feedbackId 
+    GROUP BY s.categoryName, f.sentiment
+  `;
+
+  connection.query(q, (err, sentiments) => {
+    if (err) throw err;
+
+    const sentimentCounts = { Positive: 0, Negative: 0, Neutral: 0 };
+    sentiments.forEach(r => {
+      const s = r.sentiment.toLowerCase();
+      if (s === "positive") sentimentCounts.Positive = r.count;
+      if (s === "negative") sentimentCounts.Negative = r.count;
+      if (s === "neutral") sentimentCounts.Neutral = r.count;
+    });
+
+    connection.query(q2, (err2, barChart) => {
+      if (err2) throw err2;
+
+      const categories = [...new Set(barChart.map(r => r.categoryName))];
+      const sentimentsList = ["Positive", "Negative", "Neutral"];
+
+      const chartData = sentimentsList.map(sent => ({
+        label: sent,
+        data: categories.map(cat => {
+          const item = barChart.find(r => r.categoryName === cat && r.sentiment === sent);
+          return item ? item.count : 0;
+        }),
+      }));
+
+      res.render("admin", {
+        data: sentimentCounts,
+        labels: Object.keys(sentimentCounts),
+        counts: Object.values(sentimentCounts),
+        categories,
+        chartData,
+      });
+    });
+  });
+};
+
+
+exports.getAllUsers = (req, res) => {
+  const q = "SELECT * FROM UserDetails";
+  connection.query(q, (err, results) => {
+    if (err) throw err;
+    res.render("adminUsers", { users: results });
+  });
+};
+
+exports.getEditUser = (req, res) => {
+  const q = "SELECT * FROM UserDetails WHERE id = ?";
+  connection.query(q, [req.params.id], (err, result) => {
+    if (err) throw err;
+    if (result.length === 0) return res.status(404).send("User not found");
+    res.render("editUser", { user: result[0] }); // ✅ correct file name
+  });
+};
+
+exports.updateUser = (req, res) => {
+  const { userName, email } = req.body;
+  const q = "UPDATE UserDetails SET userName = ?, email = ? WHERE id = ?";
+  connection.query(q, [userName, email, req.params.id], err => {
+    if (err) throw err;
+    res.redirect("/admin/users");
+  });
+};
+
+exports.deleteUser = (req, res) => {
+  const userId = req.params.id;
+
+  const getFeedbacks = "SELECT feedbackId FROM Feedback WHERE userId = ?";
+  connection.query(getFeedbacks, [userId], (err, feedbacks) => {
+    if (err) {
+      console.error("Error fetching feedbacks:", err);
+      return res.status(500).json({ success: false, message: "Database error" });
+    }
+
+    if (feedbacks.length === 0) {
+      const deleteUser = "DELETE FROM UserDetails WHERE id = ?";
+      return connection.query(deleteUser, [userId], err2 => {
+        if (err2) {
+          console.error("Error deleting user:", err2);
+          return res.status(500).json({ success: false, message: "Database error" });
+        }
+        console.log(`User ${userId} deleted successfully (no feedbacks).`);
+        res.json({ success: true, message: "User deleted successfully" });
+      });
+    }
+
+    const feedbackIds = feedbacks.map(f => f.feedbackId);
+    const deleteServiceTypes = "DELETE FROM ServiceType WHERE feedbackId IN (?)";
+
+    connection.query(deleteServiceTypes, [feedbackIds], err3 => {
+      if (err3) {
+        console.error("Error deleting service types:", err3);
+        return res.status(500).json({ success: false, message: "Database error" });
+      }
+
+      const deleteFeedbacks = "DELETE FROM Feedback WHERE userId = ?";
+      connection.query(deleteFeedbacks, [userId], err4 => {
+        if (err4) {
+          console.error("Error deleting feedbacks:", err4);
+          return res.status(500).json({ success: false, message: "Database error" });
+        }
+
+        const deleteUser = "DELETE FROM UserDetails WHERE id = ?";
+        connection.query(deleteUser, [userId], err5 => {
+          if (err5) {
+            console.error("Error deleting user:", err5);
+            return res.status(500).json({ success: false, message: "Database error" });
+          }
+
+          console.log(`User ${userId} and related feedbacks deleted successfully.`);
+          res.json({ success: true, message: "User and related feedbacks deleted successfully" });
+        });
+      });
+    });
+  });
+};
+
+
+exports.getAllFeedbacks = (req, res) => {
+  const q = `
+    SELECT 
+        f.feedbackId, 
+        u.id AS userId,
+        COALESCE(u.userName, 'Guest') AS userName, 
+        f.message AS feedbackText, 
+        f.sentiment, 
+        COALESCE(s.typeofCategory) AS typeofCategory,
+        COALESCE(s.categoryName) AS categoryName,
+        f.timestamp
+    FROM Feedback f
+    LEFT JOIN UserDetails u ON f.userId = u.id
+    LEFT JOIN ServiceType s ON f.feedbackId = s.feedbackId
+  `;
+
+  connection.query(q, (err, results) => {
+    if (err) throw err;
+    res.render("feedbackData", { results });
+  });
+};
+
+
+
+exports.deleteFeedback = (req, res) => {
+  const feedbackId = req.params.id;
+
+  const q1 = "DELETE FROM ServiceType WHERE feedbackId = ?";
+
+  connection.query(q1, [feedbackId], (err1) => {
+    if (err1) {
+      console.error("Error deleting from ServiceType:", err1);
+      return res.status(500).json({ success: false, message: "Database error (ServiceType)" });
+    }
+
+    const q2 = "DELETE FROM Feedback WHERE feedbackId = ?";
+    connection.query(q2, [feedbackId], (err2, result2) => {
+      if (err2) {
+        console.error("Error deleting feedback:", err2);
+        return res.status(500).json({ success: false, message: "Database error (Feedback)" });
+      }
+
+      if (result2.affectedRows === 0) {
+        return res.status(404).json({ success: false, message: "Feedback not found" });
+      }
+
+      console.log(`Feedback ${feedbackId} deleted successfully`);
+      res.json({ success: true, message: "Feedback deleted successfully" });
+    });
+  });
+};
 
