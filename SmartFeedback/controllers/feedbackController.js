@@ -7,9 +7,13 @@ exports.getFeedback = (req, res) => {
   res.render("feedback.ejs");
 };
 
+function cleanText(text) {
+    return text.replace(/[^\w\s]/gi, '').replace(/\s+/g, ' ').trim().toLowerCase();
+}
 exports.postFeedback = (req, res) => {
   const { message, typeofCategory, categoryName } = req.body;
-  const result = sentiment.analyze(message);
+  const cleanedMessage = cleanText(message);
+  const result = sentiment.analyze(cleanedMessage);
   const sentimentLabel = result.score > 0 ? "Positive" : result.score < 0 ? "Negative" : "Neutral";
   const feedbackId = uuidv4();
   const userId = req.session.userId || null;
@@ -40,3 +44,4 @@ exports.getHistory = (req, res) => {
     res.render("history.ejs", { results });
   });
 };
+
